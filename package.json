@@ -1,12 +1,24 @@
 {
   "name": "@hiapi/hiapi-cloud-dynamic-renderer",
-  "version": "0.0.2",
-  "type": "module",
-  "main": "src/index.ts",
+  "version": "0.0.4",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "build": "tsup"
   },
-  "dependencies": {
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs.js"
+    }
   },
   "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "fast-glob": "^3.3.3"
   }
 }

@@ -7,6 +7,7 @@ import fg from 'fast-glob'
 type Options = {
   dst: string | 'src/DynamicRenderer.vue'
   dirs: string
+  property?:boolean
 }
 const removeKeys = new Set(['src', 'components', 'index.vue'])
 
@@ -40,7 +41,11 @@ export default function dynamicRendererPlugin(options: Options) {
         .join('')
 
       importLines.push(`import ${pascal} from '${path}'`)
-      renderLines.push(`  <${kebab} v-if="(props.property?(item.component+'-property'):item.component) === '${kebab}'" :schema="item" />`)
+      if (options.property) {
+        renderLines.push(`<${kebab} v-if="(props.property?(item.component+'-property'):item.component) === '${kebab}'" :schema="item" />`)
+      }else {
+        renderLines.push(`<${kebab} v-if="item.component === '${kebab}'" :schema="item" />`)
+      }
     })
     const content = `
 <template>
@@ -53,7 +58,7 @@ export default function dynamicRendererPlugin(options: Options) {
 
 <script setup lang="ts">
 import type {HiapiCloudSchemas,HiapiCloudSchema} from "@hiapi/hiapi-cloud-web-basic"
-const props = defineProps<{ layout: HiapiCloudSchemas,property:Boolean }>()
+${options.property?'const props = defineProps<{ layout: HiapiCloudSchemas,property:Boolean }>()':'const props = defineProps<{ layout: HiapiCloudSchemas}>()'}
 const schemas:ComputedRef<Array<HiapiCloudSchema>> = computed(()=>props.layout?.schemas??[])
 </script>
 `

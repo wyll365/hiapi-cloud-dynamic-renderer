@@ -18,7 +18,7 @@ function toKebabCase(name: string) {
 /**
  * 自动生成 DynamicRenderer.vue
  */
-export default async function dynamicRendererPlugin(options: Options) {
+export default function dynamicRendererPlugin(options: Options) {
   const {
     dirs = 'src/components/**/*.vue',
     dst = 'src/layouts/DynamicRenderer.vue',

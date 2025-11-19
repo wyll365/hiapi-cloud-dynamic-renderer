@@ -42,9 +42,9 @@ export default function dynamicRendererPlugin(options: Options) {
 
       importLines.push(`import ${pascal} from '${path}'`)
       if (options.property) {
-        renderLines.push(`<${kebab} v-if="(props.property?(item.component+'-property'):item.component) === '${kebab}'" :schema="item" />`)
+        renderLines.push(`<${kebab} v-if="(props.property?(item.component+'-property'):item.component) === '${kebab}'" :schema="item" :type="layout.type" :platform="layout.platform"/>`)
       }else {
-        renderLines.push(`<${kebab} v-if="item.component === '${kebab}'" :schema="item" />`)
+        renderLines.push(`<${kebab} v-if="item.component === '${kebab}'" :schema="item" :type="layout.type" :platform="layout.platform" />`)
       }
     })
     const content = `
@@ -58,7 +58,9 @@ export default function dynamicRendererPlugin(options: Options) {
 
 <script setup lang="ts">
 import type {HiapiCloudSchemas,HiapiCloudSchema} from "@hiapi/hiapi-cloud-web-basic"
-${options.property?'const props = defineProps<{ layout: HiapiCloudSchemas,property:Boolean }>()':'const props = defineProps<{ layout: HiapiCloudSchemas}>()'}
+${options.property?
+        'const props = defineProps<{ layout: HiapiCloudSchemas,property:Boolean  }>()':
+        'const props = defineProps<{ layout: HiapiCloudSchemas }>()'}
 const schemas:ComputedRef<Array<HiapiCloudSchema>> = computed(()=>props.layout?.schemas??[])
 </script>
 `

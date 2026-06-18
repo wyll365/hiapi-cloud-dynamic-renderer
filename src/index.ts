@@ -57,7 +57,7 @@ export default function dynamicRendererPlugin(options: Options) {
 </template>
 
 <script setup lang="ts">
-import type {HiapiCloudSchemas,HiapiCloudSchema} from "@hiapi/hiapi-cloud-web-basic"
+import type {HiapiCloudSchema} from "@hiapi/hiapi-cloud-web-basic"
 ${options.property?
         'const props = defineProps<{ layout: HiapiCloudSchemas,property:Boolean  }>()':
         'const props = defineProps<{ layout: HiapiCloudSchemas }>()'}
@@ -70,7 +70,7 @@ const schemas:ComputedRef<Array<HiapiCloudSchema>> = computed(()=>props.layout?.
 
   return {
     name: 'vite-plugin-dynamic-renderer',
-    apply: 'serve', // 仅开发模式生效
+    // apply: 'serve', // 仅开发模式生效
     buildStart() {
       generateRenderer()
       // 监听组件目录变化

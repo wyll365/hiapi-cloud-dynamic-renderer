@@ -42,9 +42,9 @@ export default function dynamicRendererPlugin(options: Options) {
 
       importLines.push(`import ${pascal} from '${path}'`)
       if (options.property) {
-        renderLines.push(`<${kebab} v-if="(props.property?(item.component+'-property'):item.component) === '${kebab}'" :schema="item" :type="layout.type" :platform="layout.platform"/>`)
+        renderLines.push(`<${kebab} v-if="(props.property?(item.component+'-property'):item.component) === '${kebab}'" :schema="item" />`)
       }else {
-        renderLines.push(`<${kebab} v-if="item.component === '${kebab}'" :schema="item" :type="layout.type" :platform="layout.platform" />`)
+        renderLines.push(`<${kebab} v-if="item.component === '${kebab}'" :schema="item"  />`)
       }
     })
     const content = `
@@ -57,7 +57,7 @@ export default function dynamicRendererPlugin(options: Options) {
 </template>
 
 <script setup lang="ts">
-import type {HiapiCloudSchema} from "@hiapi/hiapi-cloud-web-basic"
+import type {HiapiCloudSchema,HiapiCloudSchemas} from "@hiapi/hiapi-cloud-web-basic"
 ${options.property?
         'const props = defineProps<{ layout: HiapiCloudSchemas,property:Boolean  }>()':
         'const props = defineProps<{ layout: HiapiCloudSchemas }>()'}
